@@ -1,0 +1,46 @@
+%% Initialise inputs, pathnames 
+indir = '/Volumes/TBI/TBI/openneuro/';
+outdir = '/Volumes/TBI/TBI/openneuro/derivatives/';
+code_path='/Users/noeliamartinezmolina/Documents/GitHub/TBI_preprocessing_openneuro/';
+addpath(code_path)
+addpath(fullfile(code_path,'utils'))
+subjects_allfiles = build_dataset(indir);
+subjects=subjects_allfiles(37:end,:);
+
+%% Build datasets for multiple sessions
+s1=1;s2=1;s3=1;
+for sbji = 1:size(subjects, 1)
+    sub_path=fullfile(subjects(sbji).folder, subjects(sbji).name);
+    ses=dirflt(sub_path);
+    if numel(ses)==4
+        if ismember({ses(3).name}, {'ses-1'})
+            Idx_s1(s1,1)=sbji;
+            s1=s1+1;
+        end
+        if ismember({ses(4).name}, {'ses-2'})
+            Idx_s2(s2,1)=sbji; 
+            s2=s2+1;
+        end
+    end
+    if numel(ses)==6
+        if ismember({ses(4).name}, {'ses-1'})
+            Idx_s1(s1,1)=sbji; 
+            s1=s1+1;
+        end
+        if ismember({ses(5).name}, {'ses-2'})
+            Idx_s2(s2,1)=sbji;
+            s2=s2+1;
+        end
+        if ismember({ses(6).name}, {'ses-3'})
+            Idx_s3(s3,1)=sbji; 
+            s3=s3+1;
+        end
+    end   
+end
+   
+subjects_s1=subjects(Idx_s1); subjects_s2=subjects(Idx_s2); subjects_s3=subjects(Idx_s3); 
+
+
+% Do preprocess
+SPM0_Initialise(indir, outdir, subjects_s1(2:end))
+SPM_prepro_wrapper(subjects_s1(2),outdir)
