@@ -1,6 +1,6 @@
 %% Initialise inputs, pathnames 
 indir = '/Volumes/TBI/TBI/openneuro/';
-outdir = '/Volumes/TBI/TBI/openneuro/derivatives/';
+outdir = '/Volumes/TBI/TBI/openneuro/derivatives/data/';
 code_path='/Users/noeliamartinezmolina/Documents/GitHub/TBI_preprocessing_openneuro/';
 addpath(code_path)
 addpath(fullfile(code_path,'utils'))
